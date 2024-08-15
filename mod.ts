@@ -1,7 +1,13 @@
 import type { XcodeRelease } from "./types.ts";
 
 export async function GetXcodeReleases(): Promise<XcodeRelease[]> {
-  return await fetch("https://xcodereleases.com/data.json")
+  return await GetXcodeReleasesWithURL("https://xcodereleases.com/data.json");
+}
+
+export async function GetXcodeReleasesWithURL(
+  url: string,
+): Promise<XcodeRelease[]> {
+  return await fetch(url)
     .then((response) => response.json())
     .then((data) => parseXcodeReleases(data));
 }
