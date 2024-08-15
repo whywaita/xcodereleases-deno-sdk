@@ -105,7 +105,10 @@ Deno.test(function parseJSON_OK() {
   const got: XcodeRelease[] = parseXcodeReleases(testInput);
 
   assertEquals(got.length, 1);
-  assertEquals(got[0].checksums?.sha1, "0ecc3cc5640ee37036422a89497e41544aecf320");
+  assertEquals(
+    got[0].checksums?.sha1,
+    "0ecc3cc5640ee37036422a89497e41544aecf320",
+  );
   assertEquals(got[0].name, "Xcode");
   assertEquals(got[0].requires, "14.5");
 
