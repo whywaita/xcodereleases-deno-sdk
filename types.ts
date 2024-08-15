@@ -1,3 +1,6 @@
+/**
+ * Types for the Xcode releases.
+ */
 export type XcodeRelease = {
   _dateOrder: number;
   _swiftOrder: number;
