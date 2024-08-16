@@ -82,7 +82,7 @@ export function GetXcodeReleasesByRelease(
 }
 
 /**
- * Get the Xcode releases by date
+ * Get the Xcode releases until date
  * @param releases
  * @param date
  * @returns XcodeRelease[]
@@ -99,6 +99,27 @@ export function GetXcodeReleasesUntilDate(
     );
 
     return releaseDate <= date;
+  });
+}
+
+/**
+ * Get the Xcode releases since date
+ * @param releases
+ * @param date
+ * @returns XcodeRelease[]
+ */
+export function GetXcodeReleasesSinceDate(
+  releases: XcodeRelease[],
+  date: Date,
+): XcodeRelease[] {
+  return releases.filter((release) => {
+    const releaseDate = new Date(
+      release.date.year,
+      release.date.month - 1,
+      release.date.day,
+    );
+
+    return releaseDate >= date;
   });
 }
 
