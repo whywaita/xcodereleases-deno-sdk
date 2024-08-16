@@ -1,11 +1,13 @@
 import type { XcodeRelease } from "./types.ts";
 
+export const APIEndpoint: string = "https://xcodereleases.com/data.json";
+
 /**
  * Get the Xcode releases from https://xcodereleases.com/data.json
  * @returns {Promise<XcodeRelease[]>}
  */
 export async function GetXcodeReleases(): Promise<XcodeRelease[]> {
-  return await GetXcodeReleasesWithURL("https://xcodereleases.com/data.json");
+  return await GetXcodeReleasesWithURL(APIEndpoint);
 }
 
 /**
