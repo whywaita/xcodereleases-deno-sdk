@@ -101,3 +101,5 @@ export function GetXcodeReleasesUntilDate(
     return releaseDate <= date;
   });
 }
+
+export type { XcodeRelease } from "./types.ts";
