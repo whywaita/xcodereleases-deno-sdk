@@ -2,6 +2,7 @@ import { assertEquals } from "@std/assert";
 import {
   GetXcodeReleaseByVersion,
   GetXcodeReleasesByRelease,
+  GetXcodeReleasesCompatibleVersion,
   GetXcodeReleasesSinceDate,
   GetXcodeReleasesUntilDate,
 } from "./mod.ts";
@@ -46,6 +47,37 @@ Deno.test(function GetXcodeReleasesUntilDate_Until202408() {
   const date: Date = new Date("2024-08-01");
   const result: XcodeRelease[] = GetXcodeReleasesUntilDate(releases, date);
   assertEquals(result.length, releases.length - 2);
+});
+
+Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac145() {
+  const releases: XcodeRelease[] = parseXcodeReleases(input);
+  const result: XcodeRelease[] = GetXcodeReleasesCompatibleVersion(
+    releases,
+    "14.5",
+  );
+  assertEquals(result.length, 17);
+});
+
+Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac135() {
+  const releases: XcodeRelease[] = parseXcodeReleases(input);
+  const result: XcodeRelease[] = GetXcodeReleasesCompatibleVersion(
+    releases,
+    "13.5",
+  );
+  assertEquals(result.length, 2);
+});
+
+Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac145_OnlyRelease() {
+  const releases: XcodeRelease[] = parseXcodeReleases(input);
+  const result: XcodeRelease[] = GetXcodeReleasesCompatibleVersion(
+    releases,
+    "14.5",
+  );
+  const onlyRelease: XcodeRelease[] = GetXcodeReleasesByRelease(
+    result,
+    "release",
+  );
+  assertEquals(onlyRelease.length, 3);
 });
 
 const input: string = `

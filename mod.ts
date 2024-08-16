@@ -123,4 +123,30 @@ export function GetXcodeReleasesSinceDate(
   });
 }
 
+/**
+ * Get the Xcode releases compatible with macOS version
+ * @param releases
+ * @param macOSVersion
+ * @returns XcodeReleases[]
+ */
+export function GetXcodeReleasesCompatibleVersion(
+  releases: XcodeRelease[],
+  macOSVersion: string,
+): XcodeRelease[] {
+  // requires: "14.5" support macOS 14.5+
+  const [major, minor] = macOSVersion.split(".");
+  const majorVersion = parseInt(major);
+  const minorVersion = parseInt(minor);
+
+  return releases.filter((release) => {
+    const [requiredMajor, requiredMinor] = release.requires.split(".");
+    const requiredMajorVersion = parseInt(requiredMajor);
+    const requiredMinorVersion = parseInt(requiredMinor);
+
+    return majorVersion > requiredMajorVersion ||
+      (majorVersion === requiredMajorVersion &&
+        minorVersion >= requiredMinorVersion);
+  });
+}
+
 export type { XcodeRelease } from "./types.ts";
