@@ -19,12 +19,10 @@ export async function GetXcodeReleases(): Promise<XcodeRelease[]> {
 export async function GetXcodeReleasesWithURL(
   url: string,
 ): Promise<XcodeRelease[]> {
-  return await fetch(url)
-    .then((response) => response.json())
-    .then((data) => parseXcodeReleases(data))
-    .then((releases) =>
-      releases.sort((a, b) => a._versionOrder - b._versionOrder)
-    );
+  const response = await fetch(url);
+  const data = await response.json() as string;
+  const releases = parseXcodeReleases(data);
+  return releases.sort((a, b) => a._versionOrder - b._versionOrder);
 }
 
 /**
