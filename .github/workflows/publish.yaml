@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  publish:
+  publish-jsr:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,4 +17,27 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno publish
+      - name: Publish to jsr.io
+        run: deno publish
+  publish-npmjs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get tag name
+        run: |
+        echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        echo "ONLY_NUMBER=${TAG_NAME#v}" >> $GITHUB_ENV
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: Build npm package
+        run: deno run -A scripts/build_npm.ts ${{ env.ONLY_NUMBER }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish to npm
+        run: npm publish npm/ --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
