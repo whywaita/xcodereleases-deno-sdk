@@ -1,5 +1,8 @@
 # xcodereleases-deno-sdk
 
+[![JSR](https://jsr.io/badges/@whywaita/xcodereleases-deno-sdk)](https://jsr.io/@whywaita/xcodereleases-deno-sdk)
+[![npm version](https://badge.fury.io/js/xcodereleases-deno-sdk.svg)](https://badge.fury.io/js/xcodereleases-deno-sdk)
+
 xcodereleases-deno-sdk provides Type definition of [xcodereleases.com](https://xcodereleases.com) for deno
 
 ## Usage
