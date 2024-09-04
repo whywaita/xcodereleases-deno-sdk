@@ -1,6 +1,6 @@
 {
   "name": "@whywaita/xcodereleases-deno-sdk",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "tasks": {
     "dev": "deno test --watch mod.ts"
   },
