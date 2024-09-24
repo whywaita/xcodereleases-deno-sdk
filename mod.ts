@@ -20,8 +20,7 @@ export async function GetXcodeReleasesWithURL(
   url: string,
 ): Promise<XcodeRelease[]> {
   const response = await fetch(url);
-  const data = await response.json() as string;
-  const releases = parseXcodeReleases(data);
+  const releases: XcodeRelease[] = await response.json();
   return releases.sort((a, b) => a._versionOrder - b._versionOrder);
 }
 
@@ -31,7 +30,8 @@ export async function GetXcodeReleasesWithURL(
  * @returns XcodeRelease[]
  */
 export function parseXcodeReleases(data: string): XcodeRelease[] {
-  return JSON.parse(data);
+  const v: XcodeRelease[] = JSON.parse(data);
+  return v;
 }
 
 /**
@@ -143,10 +143,39 @@ export function GetXcodeReleasesCompatibleVersion(
     const requiredMajorVersion = parseInt(requiredMajor);
     const requiredMinorVersion = parseInt(requiredMinor);
 
-    return majorVersion > requiredMajorVersion ||
+    return majorVersion < requiredMajorVersion ||
       (majorVersion === requiredMajorVersion &&
-        minorVersion >= requiredMinorVersion);
+        minorVersion <= requiredMinorVersion);
   });
 }
 
+/**
+ * Divide the Xcode releases by Xcode version (minor version)
+ * @param releases
+ * @returns Map<string, XcodeRelease[]>
+ */
+export function DivideXcodeReleasesByVersion(
+  releases: XcodeRelease[],
+): Map<string, XcodeRelease[]> {
+  const map = new Map<string, XcodeRelease[]>();
+  releases.forEach((release) => {
+    const minorVersion = release.version.number.split(".")[1];
+    if (!map.has(minorVersion)) {
+      map.set(minorVersion, []);
+    }
+    map.get(minorVersion)?.push(release);
+  });
+  return map;
+}
+
+/**
+ * Check the Xcode release is patch version
+ * @param Xcoderelease release
+ * @returns boolean
+ */
+export function IsPatchVersion(release: XcodeRelease): boolean {
+  return release.version.number.split(".").length > 2;
+}
+
 export type { XcodeRelease } from "./types.ts";
+export { GetXcodeVersionsInGitHubHosted } from "./gha.ts";
