@@ -20,7 +20,7 @@ export async function GetXcodeReleasesWithURL(
   url: string,
 ): Promise<XcodeRelease[]> {
   const response = await fetch(url);
-  const releases: XcodeRelease[] = await response.json();
+  const releases: XcodeRelease[] = await response.json() as XcodeRelease[];
   return releases.sort((a, b) => a._versionOrder - b._versionOrder);
 }
 

@@ -28,3 +28,4 @@ jobs:
 
       - run: deno lint
       - run: deno test
+      - run: deno run -A scripts/build_npm.ts 0.0.999
