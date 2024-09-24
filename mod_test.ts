@@ -56,11 +56,6 @@ Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac145() {
     releases,
     "14.5",
   );
-  console.log("Get Xcode releases compatible with macOS 14.5");
-  for (const release of result) {
-    console.log(release.requires);
-    console.log(release.version);
-  }
   assertEquals(result.length, 6);
 });
 
@@ -70,11 +65,6 @@ Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac135() {
     releases,
     "13.5",
   );
-  console.log("Get Xcode releases compatible with macOS 13.5");
-  for (const release of result) {
-    console.log(release.requires);
-    console.log(release.version);
-  }
   assertEquals(result.length, 17);
 });
 
@@ -88,11 +78,6 @@ Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac140_OnlyRelease() {
     result,
     "release",
   );
-  console.log("Get Xcode releases compatible with macOS 14.0 (only release)");
-  for (const release of onlyRelease) {
-    console.log(release.requires);
-    console.log(release.version);
-  }
   assertEquals(onlyRelease.length, 2);
 });
 
@@ -102,17 +87,10 @@ Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac1645() {
     releases,
     "16.4.5",
   );
-  console.log(
-    "Get Xcode releases compatible with macOS 16.45 (in future, not found)",
-  );
-  for (const release of result) {
-    console.log(release.requires);
-    console.log(release.version);
-  }
   assertEquals(result.length, 0);
 });
 
-Deno.test(function GetXcodeVersionsInGitHubHosted_IsGood() {
+Deno.test(function TestGetXcodeVersionsInGitHubHosted() {
   const releases: XcodeRelease[] = parseXcodeReleases(input);
   console.log("All Xcode versions");
   for (const release of releases) {
@@ -123,11 +101,6 @@ Deno.test(function GetXcodeVersionsInGitHubHosted_IsGood() {
     "14.0",
   );
   assertEquals(result.length, 3);
-
-  console.log("Get Xcode versions in GitHub hosted");
-  for (const release of result) {
-    console.log(release.version);
-  }
 
   const betaVersions: XcodeRelease[] = GetXcodeReleasesByRelease(
     result,

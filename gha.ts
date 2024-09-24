@@ -53,22 +53,12 @@ export function GetXcodeVersionsInGitHubHosted(
   const betaVersions: XcodeRelease[] = GetXcodeReleasesByRelease(xr, "beta");
   result = result.concat(betaVersions[betaVersions.length - 1]);
 
-  result.sort((a, b) => {
-    if (a._versionOrder > b._versionOrder) {
-      return -1;
-    }
-    if (a._versionOrder < b._versionOrder) {
-      return 1;
-    }
-    return 0;
-  });
+  result.sort((a, b) => b._versionOrder - a._versionOrder);
 
   // remove duplicates
   result = result.filter((value, index, self) => {
     return self.indexOf(value) === index;
   });
-  // remove undefined
-  result = result.filter((release) => release !== undefined);
   return result;
 }
 
