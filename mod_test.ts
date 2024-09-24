@@ -5,6 +5,7 @@ import {
   GetXcodeReleasesCompatibleVersion,
   GetXcodeReleasesSinceDate,
   GetXcodeReleasesUntilDate,
+  GetXcodeVersionsInGitHubHosted,
 } from "./mod.ts";
 import { parseXcodeReleases } from "./mod.ts";
 import type { XcodeRelease } from "./types.ts";
@@ -55,7 +56,7 @@ Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac145() {
     releases,
     "14.5",
   );
-  assertEquals(result.length, 17);
+  assertEquals(result.length, 6);
 });
 
 Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac135() {
@@ -64,20 +65,49 @@ Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac135() {
     releases,
     "13.5",
   );
-  assertEquals(result.length, 2);
+  assertEquals(result.length, 17);
 });
 
-Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac145_OnlyRelease() {
+Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac140_OnlyRelease() {
   const releases: XcodeRelease[] = parseXcodeReleases(input);
   const result: XcodeRelease[] = GetXcodeReleasesCompatibleVersion(
     releases,
-    "14.5",
+    "14.0",
   );
   const onlyRelease: XcodeRelease[] = GetXcodeReleasesByRelease(
     result,
     "release",
   );
-  assertEquals(onlyRelease.length, 3);
+  assertEquals(onlyRelease.length, 2);
+});
+
+Deno.test(function GetXcodeReleasesCompatibleVersion_WithMac1645() {
+  const releases: XcodeRelease[] = parseXcodeReleases(input);
+  const result: XcodeRelease[] = GetXcodeReleasesCompatibleVersion(
+    releases,
+    "16.4.5",
+  );
+  assertEquals(result.length, 0);
+});
+
+Deno.test(function TestGetXcodeVersionsInGitHubHosted() {
+  const releases: XcodeRelease[] = parseXcodeReleases(input);
+  console.log("All Xcode versions");
+  for (const release of releases) {
+    console.log(release.version);
+  }
+  const result: XcodeRelease[] = GetXcodeVersionsInGitHubHosted(
+    releases,
+    "14.0",
+  );
+  assertEquals(result.length, 3);
+
+  const betaVersions: XcodeRelease[] = GetXcodeReleasesByRelease(
+    result,
+    "beta",
+  );
+  // lastest beta only
+  assertEquals(betaVersions.length, 1);
 });
 
 const input: string = `
@@ -1728,6 +1758,94 @@ const input: string = `
       "number": "15.2",
       "release": {
         "beta": 1
+      }
+    }
+  },
+  {
+    "_dateOrder": 20201020,
+    "_swiftOrder": 5003000,
+    "_versionOrder": 12001000999,
+    "checksums": {
+      "sha1": "722c4f0316e7c469294c277eaf59975c1a40e061"
+    },
+    "compilers": {
+      "clang": [
+        {
+          "build": "1200.0.32.21",
+          "number": "12.0.0",
+          "release": {
+            "release": true
+          }
+        }
+      ],
+      "swift": [
+        {
+          "build": "1200.0.29.2",
+          "number": "5.3",
+          "release": {
+            "release": true
+          }
+        }
+      ]
+    },
+    "date": {
+      "day": 20,
+      "month": 10,
+      "year": 2020
+    },
+    "links": {
+      "download": {
+        "url": "https://download.developer.apple.com/Developer_Tools/Xcode_12.1/Xcode_12.1.xip"
+      },
+      "notes": {
+        "url": "https://developer.apple.com/documentation/xcode-release-notes/xcode-12_1-release-notes/"
+      }
+    },
+    "name": "Xcode",
+    "requires": "10.15.4",
+    "sdks": {
+      "iOS": [
+        {
+          "build": "18A8394",
+          "number": "14.1",
+          "release": {
+            "release": true
+          }
+        }
+      ],
+      "macOS": [
+        {
+          "build": "19G68",
+          "number": "10.15.6",
+          "release": {
+            "release": true
+          }
+        }
+      ],
+      "tvOS": [
+        {
+          "build": "18J390",
+          "number": "14.0",
+          "release": {
+            "release": true
+          }
+        }
+      ],
+      "watchOS": [
+        {
+          "build": "18R382",
+          "number": "7.0",
+          "release": {
+            "release": true
+          }
+        }
+      ]
+    },
+    "version": {
+      "build": "12A7403",
+      "number": "12.1",
+      "release": {
+        "gm": true
       }
     }
   }
